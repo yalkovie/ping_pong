@@ -40,7 +40,7 @@ class Ball(GameSprite):
         if
 #окно
 window = display.set_mode((700, 500))
-display.set_caption('Galaxy(шутер)')
+display.set_caption('Ping Pong')
 #картинка
 background = transform.scale(image.load('fon.jpg'), (700, 500))
 #спрайт
