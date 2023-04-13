@@ -1,5 +1,6 @@
 from pygame import *
 from random import *
+font.init()
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, size1, size2, player_speed):
@@ -26,32 +27,25 @@ class Player(GameSprite):
         if keys[K_DOWN] and self.rect.x < 620:
             self.rect.y += self.speed
 
-class Enemy(GameSprite):
-    def update(self):
-        self.rect.y += self.speed
-        global lost
-        if self.rect.y > 700:
-            self.rect.x = randint(80, 420)
-            self.rect.y = 0
-            lost += 1
-
-class Ball(GameSprite):
-    def update(self):
-        if
 #окно
 window = display.set_mode((700, 500))
 display.set_caption('Ping Pong')
+
 #картинка
-background = transform.scale(image.load('fon.jpg'), (700, 500))
+background = transform.scale(image.load('Fon.png'), (700, 500))
+
 #спрайт
-player1 = Player('player.jpg', 50, 230, 65, 65, 5)
-player2 = Player('player.jpg', 570, 230, 65, 65, 5)
-boll = GameSprite('player.jpg', 325, 230, 65, 65, 5)
+player1 = Player('Player.png', 50, 230, 25, 100, 5)
+player2 = Player('Player.png', 570, 230, 25, 100, 5)
+boll = GameSprite('Ball.png', 325, 230, 50, 50, 5)
+
 #ширифт
-font = font.Font(None, 35)
+font = font.SysFont("Arial", 40)
+lose1 = font.render('Player 1 проиграл!', True, (180, 0, 0))
+lose2 = font.render('Player 2 проиграл!', True, (180, 0, 0))
 
 #частота кадров
-FPS = 50
+FPS = 60
 clock = time.Clock()
 
 speed_x = 3
@@ -75,8 +69,18 @@ while run:
     boll.reset()
     boll.rect.x += speed_x
     boll.rect.y += speed_y
-    if boll.rect.y < 0 or boll.rect.y > 500:
+    '''
+    if boll.rect.y < 0 or boll.rect.y > 450:
         speed_y *= -1
+    if boll.rect.x < 0 or boll.rect.x > 650:
+        speed_x *= -1
+    '''
+    if boll.rect.y < 0 or boll.rect.y > 450:
+        speed_y *= -1
+    if boll.rect.x < 0:
+        window.blit(lose1, (200, 200))
+    if boll.rect.x > 650:
+        window.blit(lose2, (200, 200))
     if sprite.collide_rect(player1, boll) or sprite.collide_rect(player2, boll):
         speed_x *= -1
 
